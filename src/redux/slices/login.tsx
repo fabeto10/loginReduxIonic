@@ -19,13 +19,15 @@ export const loginSlice = createSlice({
     name: loginAction,
     initialState: initialState,
     reducers: {
-        login: async (state, action: PayloadAction<loginPost>) => {
-            const response = await axios.post(API_URL + "signin", action.payload);
-
-            if(response.status !== 200) {
-                storage.set("access_token", JSON.stringify(response.data.access_token));
-            };
-            console.log(response.data.access_token);
+        login: (state, action: PayloadAction<loginPost>) => {
+            axios.post(API_URL + "signin", action.payload)
+            .then((response)=>{   
+                if(response.status !== 200) {
+                    storage.set("access_token", JSON.stringify(response.data.access_token));
+                };
+                console.log(response.data.access_token);
+            })
+            return state
         },
         // login: async (email: string, password: string) => {
         //     const response = await axios.post(API_URL + "signin", {
